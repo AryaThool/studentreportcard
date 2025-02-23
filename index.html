@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Card System</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #3c4d6f;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .role-toggle {
+            display: flex;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-radius: 5px;
+            border: 1px solid #fd7e14;
+        }
+
+        .role-toggle label {
+            padding: 10px 30px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-toggle label:first-of-type {
+            border-right: 1px solid #fd7e14;
+        }
+
+        .role-toggle input[type="radio"] {
+            display: none;
+        }
+
+        .role-toggle input[type="radio"]:checked+label {
+            background-color: #fd7e14;
+            color: white;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #fd7e14;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logout-btn {
+            background-color: #e74c3c;
+            padding: 8px 15px;
+            width: auto;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .subjects-list {
+            margin: 20px 0;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .result-code {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-radius: 5px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .result-display {
+            margin-top: 30px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            width: auto;
+        }
+
+        .notice {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .test-accounts {
+            background-color: #e2f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .test-accounts ul {
+            list-style-type: none;
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+        }
+
+        .test-accounts li {
+            margin-bottom: 5px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background-color: #fd7e14;
+            color: white;
+            border-color: #fd7e14;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Previous HTML remains the same until the Teacher Dashboard card content -->
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="login-container">
+            <img src="/JDCOEM-Logo.png" alt="JDCOEM" class="logo">
+            <h1>Student Report Card System</h1>
+
+            <!-- <div class="test-accounts">
+                <strong>Test Accounts:</strong>
+                <ul>
+                    <li>Teacher: username - "teacher1", password - "pass123"</li>
+                    <li>Student: username - "student1", password - "pass123"</li>
+                </ul>
+            </div> -->
+
+            <div class="role-toggle">
+                <input type="radio" id="student-role" name="role" value="student" checked>
+                <label for="student-role">Student</label>
+                <input type="radio" id="teacher-role" name="role" value="teacher">
+                <label for="teacher-role">Teacher</label>
+            </div>
+
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                <button id="login-btn">Login</button>
+            </div>
+        </div>
+
+        <!-- Teacher Dashboard -->
+        <div id="teacher-dashboard" class="dashboard hidden">
+            <div class="welcome-header">
+                <h2>Teacher Dashboard</h2>
+                <button class="logout-btn" id="teacher-logout">Logout</button>
+            </div>
+
+            <div class="card">
+                <h3>Add Student Result</h3>
+                <div class="form-group">
+                    <label for="student-name">Student Name</label>
+                    <input type="text" id="student-name" placeholder="Enter student name">
+                </div>
+                <div class="form-group">
+                    <label for="student-roll">Roll Number</label>
+                    <input type="text" id="student-roll" placeholder="Enter roll number">
+                </div>
+                <div class="form-group">
+                    <label for="student-class">Class</label>
+                    <input type="text" id="student-class" placeholder="Enter class">
+                </div>
+
+                <div class="form-tabs">
+                    <button class="tab-btn active" data-type="subject">Add Subject</button>
+                    <button class="tab-btn" data-type="lab">Add Lab</button>
+                </div>
+
+                <h4 style="margin-top: 20px;">Add <span id="entry-type">Subjects</span></h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="entry-name">Name</label>
+                        <input type="text" id="entry-name" placeholder="Enter name">
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-marks">Marks (out of 100)</label>
+                        <input type="number" id="entry-marks" placeholder="Enter marks" min="0" max="100">
+                    </div>
+                    <div style="align-self: flex-end;">
+                        <button id="add-entry-btn">Add</button>
+                    </div>
+                </div>
+
+                <div class="subjects-list">
+                    <table id="subjects-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects-body"></tbody>
+                        <tfoot id="subjects-foot" class="hidden">
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>SGPA:</strong></td>
+                                <td id="sgpa"></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <button id="generate-result-btn" style="margin-top: 20px;">Generate Result Code</button>
+
+                <div id="result-code-container" class="result-code hidden">
+                    Result Code: <span id="result-code"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="student-dashboard" class="dashboard hidden">
+            <div class="welcome-header">
+                <h2>Student Dashboard</h2>
+                <button class="logout-btn" id="student-logout">Logout</button>
+            </div>
+
+            <div class="card">
+                <h3>View Your Result</h3>
+                <div class="form-group">
+                    <label for="result-code-input">Enter Result Code</label>
+                    <input type="text" id="result-code-input"
+                        placeholder="Enter the result code provided by your teacher">
+                </div>
+                <button id="view-result-btn">View Result</button>
+
+                <div id="result-display" class="result-display hidden">
+                    <div id="student-info"></div>
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align: right;"><strong>SGPA:</strong></td>
+                                <td id="result-average"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of the HTML remains the same -->
+    </div>
+
+    <script>
+        // Store users (in a real application, this would come from a backend)
+        const users = {
+            teachers: [
+                { username: "teacher1", password: "pass123" },
+                { username: "teacher2", password: "pass456" }
+            ],
+            students: [
+                { username: "student1", password: "pass123" },
+                { username: "student2", password: "pass456" }
+            ]
+        };
+
+        // Store for results (in a real application, this would be in a database)
+        const resultsStore = {};
+
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const teacherDashboard = document.getElementById('teacher-dashboard');
+        const studentDashboard = document.getElementById('student-dashboard');
+        const loginBtn = document.getElementById('login-btn');
+        const teacherLogoutBtn = document.getElementById('teacher-logout');
+        const studentLogoutBtn = document.getElementById('student-logout');
+
+        // Teacher Dashboard Elements
+        const addSubjectBtn = document.getElementById('add-subject-btn');
+        const subjectsTable = document.getElementById('subjects-table');
+        const subjectsBody = document.getElementById('subjects-body');
+        const subjectsFoot = document.getElementById('subjects-foot');
+        const averagePercentage = document.getElementById('average-percentage');
+        const generateResultBtn = document.getElementById('generate-result-btn');
+        const resultCodeContainer = document.getElementById('result-code-container');
+        const resultCodeDisplay = document.getElementById('result-code');
+
+        // Student Dashboard Elements
+        const viewResultBtn = document.getElementById('view-result-btn');
+        const resultDisplay = document.getElementById('result-display');
+        const studentInfo = document.getElementById('student-info');
+        const resultBody = document.getElementById('result-body');
+        const resultAverage = document.getElementById('result-average');
+
+        // Login functionality
+        loginBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+
+            let authenticated = false;
+
+            if (role === 'teacher') {
+                authenticated = users.teachers.some(user =>
+                    user.username === username && user.password === password);
+
+                if (authenticated) {
+                    loginPage.style.display = 'none';
+                    teacherDashboard.classList.remove('hidden');
+                }
+            } else if (role === 'student') {
+                authenticated = users.students.some(user =>
+                    user.username === username && user.password === password);
+
+                if (authenticated) {
+                    loginPage.style.display = 'none';
+                    studentDashboard.classList.remove('hidden');
+                }
+            }
+
+            if (!authenticated) {
+                alert('Invalid username or password');
+            }
+        });
+
+        // Logout functionality
+        teacherLogoutBtn.addEventListener('click', () => {
+            teacherDashboard.classList.add('hidden');
+            loginPage.style.display = 'flex';
+            clearTeacherForm();
+        });
+
+        studentLogoutBtn.addEventListener('click', () => {
+            studentDashboard.classList.add('hidden');
+            loginPage.style.display = 'flex';
+            clearStudentForm();
+        });
+
+        // Previous code remains the same until the subjects array
+        let subjects = [];
+        let currentType = 'subject';
+
+        // Add tab switching functionality
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentType = e.target.dataset.type;
+                document.getElementById('entry-type').textContent =
+                    currentType === 'subject' ? 'Subjects' : 'Labs';
+                document.getElementById('entry-name').placeholder =
+                    `Enter ${currentType} name`;
+            });
+        });
+
+        // Function to calculate grade
+        function calculateGrade(marks) {
+            if (marks >= 90) return 'AA';
+            if (marks >= 80) return 'AB';
+            if (marks >= 70) return 'BB';
+            if (marks >= 60) return 'BC';
+            if (marks >= 50) return 'CC';
+            if (marks >= 40) return 'CD';
+            if (marks >= 35) return 'DD';
+            return 'FF';
+        }
+
+        // Modified add entry functionality
+        document.getElementById('add-entry-btn').addEventListener('click', () => {
+            const entryName = document.getElementById('entry-name').value;
+            const entryMarks = parseFloat(document.getElementById('entry-marks').value);
+
+            if (!entryName || isNaN(entryMarks) || entryMarks < 0 || entryMarks > 100) {
+                alert('Please enter valid name and marks (0-100)');
+                return;
+            }
+
+            subjects.push({
+                name: entryName,
+                type: currentType,
+                marks: entryMarks,
+                grade: calculateGrade(entryMarks)
+            });
+
+            updateSubjectsTable();
+            calculateSGPA();
+
+            // Clear inputs
+            document.getElementById('entry-name').value = '';
+            document.getElementById('entry-marks').value = '';
+        });
+
+        function updateSubjectsTable() {
+            subjectsBody.innerHTML = '';
+
+            subjects.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.name}</td>
+                    <td>${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</td>
+                    <td>${entry.marks}</td>
+                    <td>${entry.grade}</td>
+                    <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+                `;
+                subjectsBody.appendChild(row);
+            });
+
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    subjects.splice(index, 1);
+                    updateSubjectsTable();
+                    calculateSGPA();
+                });
+            });
+
+            if (subjects.length > 0) {
+                subjectsFoot.classList.remove('hidden');
+            } else {
+                subjectsFoot.classList.add('hidden');
+            }
+        }
+
+        // function calculateSGPA() {
+        //     if (subjects.length === 0) {
+        //         return;
+        //     }
+
+        //     const totalMarks = subjects.reduce((sum, subject) => sum + subject.marks, 0);
+        //     const averagePercentage = totalMarks / subjects.length;
+        //     const sgpa = (averagePercentage * 10) / 100;
+
+        //     document.getElementById('sgpa').textContent = sgpa.toFixed(2);
+        // }
+
+        // // Modify the result storage and display
+        // generateResultBtn.addEventListener('click', () => {
+        //     const studentName = document.getElementById('student-name').value;
+        //     const studentRoll = document.getElementById('student-roll').value;
+        //     const studentClass = document.getElementById('student-class').value;
+
+        //     if (!studentName || !studentRoll || !studentClass) {
+        //         alert('Please enter student details');
+        //         return;
+        //     }
+
+        //     if (subjects.length === 0) {
+        //         alert('Please add at least one subject or lab');
+        //         return;
+        //     }
+
+        //     const resultCode = 'RC' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        //     resultsStore[resultCode] = {
+        //         student: {
+        //             name: studentName,
+        //             roll: studentRoll,
+        //             class: studentClass
+        //         },
+        //         subjects: [...subjects],
+        //         sgpa: parseFloat(document.getElementById('sgpa').textContent)
+        //     };
+
+        //     resultCodeDisplay.textContent = resultCode;
+        //     resultCodeContainer.classList.remove('hidden');
+        // });
+        function calculateSGPA() {
+            if (subjects.length === 0) {
+                return;
+            }
+
+            // Check if any subject has failing grade
+            const hasFailingGrade = subjects.some(subject => subject.grade === 'FF' || subject.marks < 35);
+
+            if (hasFailingGrade) {
+                document.getElementById('sgpa').textContent = 'Fail';
+                return;
+            }
+
+            const totalMarks = subjects.reduce((sum, subject) => sum + subject.marks, 0);
+            const averagePercentage = totalMarks / subjects.length;
+            const sgpa = (averagePercentage * 10) / 100;
+
+            document.getElementById('sgpa').textContent = sgpa.toFixed(2);
+        }
+
+        // Also need to modify the generate result button event listener to handle the fail case
+        generateResultBtn.addEventListener('click', () => {
+            const studentName = document.getElementById('student-name').value;
+            const studentRoll = document.getElementById('student-roll').value;
+            const studentClass = document.getElementById('student-class').value;
+
+            if (!studentName || !studentRoll || !studentClass) {
+                alert('Please enter student details');
+                return;
+            }
+
+            if (subjects.length === 0) {
+                alert('Please add at least one subject or lab');
+                return;
+            }
+
+            const resultCode = 'RC' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const sgpaElement = document.getElementById('sgpa');
+
+            resultsStore[resultCode] = {
+                student: {
+                    name: studentName,
+                    roll: studentRoll,
+                    class: studentClass
+                },
+                subjects: [...subjects],
+                sgpa: sgpaElement.textContent === 'Fail' ? 'Fail' : parseFloat(sgpaElement.textContent)
+            };
+
+            resultCodeDisplay.textContent = resultCode;
+            resultCodeContainer.classList.remove('hidden');
+        });
+
+        // Update the view result button to handle fail case
+        viewResultBtn.addEventListener('click', () => {
+            const code = document.getElementById('result-code-input').value.trim();
+
+            if (!code) {
+                alert('Please enter a result code');
+                return;
+            }
+
+            const result = resultsStore[code];
+
+            if (!result) {
+                alert('Invalid result code. Please check with your teacher for the correct code.');
+                return;
+            }
+
+            studentInfo.innerHTML = `
+        <div style="margin-bottom: 20px; background-color: #f8f9fa; padding: 15px; border-radius: 5px;">
+            <h3 style="margin-bottom: 10px;">Student Information</h3>
+            <p><strong>Name:</strong> ${result.student.name}</p>
+            <p><strong>Roll Number:</strong> ${result.student.roll}</p>
+            <p><strong>Class:</strong> ${result.student.class}</p>
+        </div>
+    `;
+
+            resultBody.innerHTML = '';
+            result.subjects.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${entry.name}</td>
+            <td>${entry.marks}</td>
+            <td>${entry.grade}</td>
+        `;
+                resultBody.appendChild(row);
+            });
+
+            resultAverage.textContent = result.sgpa === 'Fail' ? 'Fail' : result.sgpa.toFixed(2);
+            resultDisplay.classList.remove('hidden');
+        });
+        // Modify the student result display
+        viewResultBtn.addEventListener('click', () => {
+            const code = document.getElementById('result-code-input').value.trim();
+
+            if (!code) {
+                alert('Please enter a result code');
+                return;
+            }
+
+            const result = resultsStore[code];
+
+            if (!result) {
+                alert('Invalid result code. Please check with your teacher for the correct code.');
+                return;
+            }
+
+            studentInfo.innerHTML = `
+                <div style="margin-bottom: 20px; background-color: #f8f9fa; padding: 15px; border-radius: 5px;">
+                    <h3 style="margin-bottom: 10px;">Student Information</h3>
+                    <p><strong>Name:</strong> ${result.student.name}</p>
+                    <p><strong>Roll Number:</strong> ${result.student.roll}</p>
+                    <p><strong>Class:</strong> ${result.student.class}</p>
+                </div>
+            `;
+
+            resultBody.innerHTML = '';
+            result.subjects.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.name}</td>
+                    <td>${entry.marks}</td>
+                    <td>${entry.grade}</td>
+                `;
+                resultBody.appendChild(row);
+            });
+
+            resultAverage.textContent = `${result.sgpa.toFixed(2)}`;
+
+            resultDisplay.classList.remove('hidden');
+        });
+
+        // Rest of the code remains the same
+    </script>
+</body>
+
+</html>
